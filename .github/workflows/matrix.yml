@@ -1,0 +1,29 @@
+name: Matrix Build Demo
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [14, 16, 18]  # 3 variants
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: matrix-79353dd
+        run: echo "Building for version ${{ matrix.version }}"
+
+      - name: Generate build artifact
+        run: echo "Build output for version ${{ matrix.version }}" > output-${{ matrix.version }}.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-79353dd-v${{ matrix.version }}
+          path: output-${{ matrix.version }}.txt
+
